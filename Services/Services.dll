@@ -1,0 +1,202 @@
+﻿[Serializable]
+public class Services
+{
+
+    public List<Service> ServiceArray = new List<Service>();
+    public string[] Types = new string[] { "Education", "Repair" };
+
+    public int Count
+    {
+        get
+        {
+            return ServiceArray.Count;
+        }
+    }
+
+    public void Add(Service item)
+    {
+        ServiceArray.Add(item);
+        Serialize();
+    }
+
+    public void Clear()
+    {
+        ServiceArray = null;
+        ServiceArray = new List<Service>();
+        Serialize();
+    }
+
+    public bool Remove(Service item)
+    {
+        ServiceArray.Remove(item);
+        Serialize();
+        return true;
+    }
+
+    public List<Service> Sort(List<Service> list, int byWhat)                                        //TODO
+    {
+        List<Service> sortedList = null;
+        switch (byWhat)
+        {
+            case 1: //Name
+                sortedList = list.OrderBy(a => a.Name).ToList();
+                break;
+
+            case 2: //Description
+                sortedList = list.OrderBy(a => a.Description).ToList();
+                break;
+
+            case 3: //Price
+                sortedList = list.OrderBy(a => a.Price).ToList();
+                break;
+
+            case 4: //phone
+                sortedList = list.OrderBy(a => a.PhoneNumber).ToList();
+                break;
+
+            case 5: //PersonName
+                sortedList = list.OrderBy(a => a.MainPerson).ToList();
+                break;
+
+            default:
+                break;
+
+        }
+        return sortedList;
+    }
+
+    public Service Search(string keyword)
+    {
+        foreach (Services.Service ser in ServiceArray)
+        {
+            if (ser.Name == keyword || ser.Description == keyword || ser.Price == Convert.ToInt16(keyword) || ser.PhoneNumber == keyword || ser.MainPerson == keyword)
+                return ser;
+        }
+        return null;
+    }
+
+    public void PrintService(Service ser)
+    {
+        Console.WriteLine("ID:{0}, Type: {1},  Name: {2}, Description: {3}, Price: {4}, Phone: {5}, Person: {6}", 0, ser.Type, ser.Name, ser.Description, ser.Price, ser.PhoneNumber, ser.MainPerson);    //todo
+    }
+
+    public void PrintAll(List<Service> list)
+    {
+        int index = 0;
+        foreach (Services.Service ser in list)
+        {
+            Console.WriteLine("ID:{0}, Type: {1},  Name: {2}, Description: {3}, Price: {4}, Phone: {5}, Person: {6}", index++, ser.Type, ser.Name, ser.Description, ser.Price, ser.PhoneNumber, ser.MainPerson);
+        }
+    }
+
+    public void Serialize()
+    {
+
+        XmlSerializer formatter = new XmlSerializer(typeof(List<Service>));
+        using (FileStream fs = new FileStream("Services.xml", FileMode.Create))
+        {
+            formatter.Serialize(fs, ServiceArray);
+        }
+
+    }
+
+    public void Deserialize()
+    {
+        XmlSerializer formatter = new XmlSerializer(typeof(List<Service>));
+        using (FileStream fs = new FileStream("Services.xml", FileMode.Open))
+        {
+            ServiceArray = (List<Service>)formatter.Deserialize(fs);
+        }
+    }
+
+    public void Serialize(string jSonMode)
+    {
+        using (StreamWriter file = File.CreateText("Services.txt"))
+        {
+            string json = JsonConvert.SerializeObject(ServiceArray);
+            file.WriteLine(json);
+            file.Close();
+        }
+    }
+
+    public void Deserialize(string jSonMode)
+    {
+        JsonSerializer se = new JsonSerializer();
+        StreamReader re = new StreamReader("Services.txt");
+        JsonTextReader reader = new JsonTextReader(re);
+        ServiceArray = se.Deserialize<List<Service>>(reader);
+    }
+
+
+    public class Service
+    {
+        public string Type { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public double Price { get; set; }
+        public string PhoneNumber { get; set; }
+        public string MainPerson { get; set; }
+
+        public Service() { }
+
+        public Service(string type, string name, string description, double price, string phoneNumber, string mainPerson)
+        {
+            this.Type = type;
+            this.Name = name;
+            this.Description = description;
+            this.Price = price;
+            this.PhoneNumber = phoneNumber;
+            this.MainPerson = mainPerson;
+        }
+
+    }
+
+    public class Validation
+    {
+        public bool IsValidName(string name)
+        {
+            int number;
+            if (name.Length > 3 && name.Length < 50 && !int.TryParse(name, out number))
+                return true;
+            return false;
+        }
+
+        public bool IsValidType(string type)
+        {
+            int number = 0;
+
+
+            if (int.TryParse(type, out number) && number < 3 && number > 0)
+                return true;
+            return false;
+        }
+
+        public bool IsValidPrice(string price)
+        {
+            int number = 0;
+
+
+            if (int.TryParse(price, out number) && number >= 0)
+                return true;
+            return false;
+        }
+
+        public bool IsValidMainPerson(string name)
+        {
+            int number;
+            if (name.Length > 5 && name.Length < 40 && !int.TryParse(name, out number))
+                return true;
+            return false;
+        }
+
+        public bool IsValidPhone(string phone)
+        {
+            Regex expression = new Regex(@"^([+]\d{1,2})?[ ]?-?\d{3}?-?[ ]?\d{7}$");
+            if (expression.IsMatch(phone))
+                return true;
+            return false;
+        }
+
+
+    }
+}
