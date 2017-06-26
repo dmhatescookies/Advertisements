@@ -1,0 +1,1 @@
+[{"Type":"Repair","Name":"dsfdfsf","Description":"fsdfdf","Price":53453.0,"PhoneNumber":"+380778965678","MainPerson":"fgfdgd"},{"Type":"Education","Name":"bhfghfh","Description":"hgfghfhfgh","Price":900.0,"PhoneNumber":"0998787888","MainPerson":"fgdfgd"},{"Type":"Repair","Name":"dfdsfsdf","Description":"hfghfghf","Price":1234.0,"PhoneNumber":"0999999999","MainPerson":"cvxcvbx"}]

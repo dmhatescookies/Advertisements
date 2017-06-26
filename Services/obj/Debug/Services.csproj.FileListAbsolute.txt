@@ -1,0 +1,24 @@
+c:\users\dmytro maryshchuk\documents\visual studio 2017\Projects\Services\Services\bin\Debug\Services.exe.config
+c:\users\dmytro maryshchuk\documents\visual studio 2017\Projects\Services\Services\bin\Debug\Services.exe
+c:\users\dmytro maryshchuk\documents\visual studio 2017\Projects\Services\Services\bin\Debug\Services.pdb
+c:\users\dmytro maryshchuk\documents\visual studio 2017\Projects\Services\Services\bin\Debug\Newtonsoft.Json.dll
+c:\users\dmytro maryshchuk\documents\visual studio 2017\Projects\Services\Services\bin\Debug\Newtonsoft.Json.xml
+c:\users\dmytro maryshchuk\documents\visual studio 2017\Projects\Services\Services\obj\Debug\Services.csprojResolveAssemblyReference.cache
+c:\users\dmytro maryshchuk\documents\visual studio 2017\Projects\Services\Services\obj\Debug\Services.exe
+c:\users\dmytro maryshchuk\documents\visual studio 2017\Projects\Services\Services\obj\Debug\Services.pdb
+C:\Users\Dmytro Maryshchuk\Source\Repos\Advertisements\Services\bin\Debug\Services.exe.config
+C:\Users\Dmytro Maryshchuk\Source\Repos\Advertisements\Services\bin\Debug\Services.exe
+C:\Users\Dmytro Maryshchuk\Source\Repos\Advertisements\Services\bin\Debug\Services.pdb
+C:\Users\Dmytro Maryshchuk\Source\Repos\Advertisements\Services\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Dmytro Maryshchuk\Source\Repos\Advertisements\Services\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Dmytro Maryshchuk\Source\Repos\Advertisements\Services\obj\Debug\Services.exe
+C:\Users\Dmytro Maryshchuk\Source\Repos\Advertisements\Services\obj\Debug\Services.pdb
+C:\Users\Dmytro Maryshchuk\Source\Repos\Advertisements\Services\bin\Debug\xunit.abstractions.dll
+C:\Users\Dmytro Maryshchuk\Source\Repos\Advertisements\Services\bin\Debug\xunit.assert.dll
+C:\Users\Dmytro Maryshchuk\Source\Repos\Advertisements\Services\bin\Debug\xunit.core.dll
+C:\Users\Dmytro Maryshchuk\Source\Repos\Advertisements\Services\bin\Debug\xunit.execution.desktop.dll
+C:\Users\Dmytro Maryshchuk\Source\Repos\Advertisements\Services\bin\Debug\xunit.abstractions.xml
+C:\Users\Dmytro Maryshchuk\Source\Repos\Advertisements\Services\bin\Debug\xunit.assert.xml
+C:\Users\Dmytro Maryshchuk\Source\Repos\Advertisements\Services\bin\Debug\xunit.core.xml
+C:\Users\Dmytro Maryshchuk\Source\Repos\Advertisements\Services\bin\Debug\xunit.execution.desktop.xml
+C:\Users\Dmytro Maryshchuk\Source\Repos\Advertisements\Services\obj\Debug\Services.csprojResolveAssemblyReference.cache

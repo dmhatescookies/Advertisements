@@ -130,7 +130,7 @@ namespace Ad
 
                     case 6:  //Search by...
                         Console.WriteLine("Search: \nEnter keyword:");
-                        Console.WriteLine((Advertise.Search(Console.ReadLine())).Info());
+                        Console.WriteLine((Advertise.Search(Advertise.Array, Console.ReadLine())).Info());
                         break;
 
                     case 7:  //Save to...

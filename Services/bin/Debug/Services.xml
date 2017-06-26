@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<ArrayOfAD xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Ad>
+    <Type>Repair</Type>
+    <Name>dsfdfsf</Name>
+    <Description>fsdfdf</Description>
+    <Price>53453</Price>
+    <PhoneNumber>+380778965678</PhoneNumber>
+    <MainPerson>fgfdgd</MainPerson>
+  </Ad>
+  <Ad>
+    <Type>Education</Type>
+    <Name>bhfghfh</Name>
+    <Description>hgfghfhfgh</Description>
+    <Price>900</Price>
+    <PhoneNumber>0998787888</PhoneNumber>
+    <MainPerson>fgdfgd</MainPerson>
+  </Ad>
+  <Ad>
+    <Type>Repair</Type>
+    <Name>dfdsfsdf</Name>
+    <Description>hfghfghf</Description>
+    <Price>1234</Price>
+    <PhoneNumber>0999999999</PhoneNumber>
+    <MainPerson>cvxcvbx</MainPerson>
+  </Ad>
+</ArrayOfAD>

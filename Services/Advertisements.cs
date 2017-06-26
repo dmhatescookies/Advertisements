@@ -74,11 +74,11 @@ namespace Ad
             return sortedList;
         }
 
-        public Ad Search(string keyword)
+        public Ad Search(List<Ad> list, string keyword)
         {
-            foreach (Advertisements.Ad ser in Array)
+            foreach (Advertisements.Ad ser in list)
             {
-                if (ser.Name == keyword || ser.Description == keyword || ser.Price == Convert.ToInt16(keyword) || ser.PhoneNumber == keyword || ser.MainPerson == keyword)
+                if (ser.Name == keyword || ser.Description == keyword || ser.Price == double.Parse(keyword) || ser.PhoneNumber == keyword || ser.MainPerson == keyword)
                     return ser;
             }
             return null;

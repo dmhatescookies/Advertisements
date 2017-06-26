@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<ArrayOfAD xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Ad>
+    <Type>Education</Type>
+    <Name>English</Name>
+    <Description>Lessions</Description>
+    <Price>1000</Price>
+    <PhoneNumber>+380635699990</PhoneNumber>
+    <MainPerson>Dmytro</MainPerson>
+  </Ad>
+  <Ad>
+    <Type>Education</Type>
+    <Name>English</Name>
+    <Description>Lessions</Description>
+    <Price>3000</Price>
+    <PhoneNumber>+380635699990</PhoneNumber>
+    <MainPerson>Dmytro</MainPerson>
+  </Ad>
+  <Ad>
+    <Type>Education</Type>
+    <Name>English</Name>
+    <Description>Lessions</Description>
+    <Price>500</Price>
+    <PhoneNumber>+380635699990</PhoneNumber>
+    <MainPerson>Dmytro</MainPerson>
+  </Ad>
+</ArrayOfAD>
