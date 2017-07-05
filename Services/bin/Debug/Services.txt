@@ -1,1 +1,0 @@
-[{"AdvertId":0,"Type":"Education","Name":"C# courae","Description":"C# course by example","Price":4000,"PersonId":1},{"AdvertId":0,"Type":"Repair","Name":"Wimdows","Description":"Wimdows repair","Price":1000,"PersonId":1}]
