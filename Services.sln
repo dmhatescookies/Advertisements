@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Advertisements", "Services\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdvertisementsTests", "AdvertisementsTests\AdvertisementsTests.csproj", "{78E9F567-F6C0-49E6-8BD3-577C727C35BA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdvertisementsMVC", "AdvertisementsMVC\AdvertisementsMVC.csproj", "{AC5E8E6A-E832-4600-871C-E007567E9DDA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{78E9F567-F6C0-49E6-8BD3-577C727C35BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78E9F567-F6C0-49E6-8BD3-577C727C35BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78E9F567-F6C0-49E6-8BD3-577C727C35BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC5E8E6A-E832-4600-871C-E007567E9DDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC5E8E6A-E832-4600-871C-E007567E9DDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC5E8E6A-E832-4600-871C-E007567E9DDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC5E8E6A-E832-4600-871C-E007567E9DDA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
