@@ -12,32 +12,41 @@ namespace AdvertisementsTests
     public class AdTests
     {
         [TestMethod]
-        public void Are_Results_Of_Searh_Equel()
+        public void SearchTest()
         {
-            List<Advertisements.Ad> list = new List<Advertisements.Ad>();
+            List<Advertisement> list = new List<Advertisement>();
             Advertisements adverse = new Advertisements();
+            List<Advertisement> expectedAdvert = new List<Advertisement>
+            { new Advertisement("Education", "English", "Lessions", 1000, "+380635699990", "Julia", "Matveeva", "qweqweqw@gmail.com")};
+            List<Advertisement> expectedList = new List<Advertisement>();
 
-            list.Add(new Advertisements.Ad("Education", "English", "Lessions", 1000, "+380635699990", "Dmytro"));
-            list.Add(new Advertisements.Ad("Education", "English", "Lessions", 1000, "+380635699780", "Dmytro"));
-            list.Add(new Advertisements.Ad("Education", "English", "Lessions", 1000, "+380635799100", "Dmytro"));
+            expectedList.Add(new Advertisement("Education", "English", "Lessions", 2000, "+380638699990", "Dmytro", "Maryshchuk", "pidmogylnyi@gmail.com"));
+            expectedList.Add(new Advertisement("Education", "English", "Lessions", 2000, "+380635799100", "Dmytro", "Maryshchuk", "pidmogylnyi@gmail.com"));
 
-            Assert.AreEqual("+380635799100", adverse.Search(list, "+380635799100").PhoneNumber); 
+            list.Add(new Advertisement("Education", "English", "Lessions", 2000, "+380638699990", "Dmytro", "Maryshchuk", "pidmogylnyi@gmail.com")); 
+            list.Add(new Advertisement("Education", "English", "Lessions", 1000, "+380635699990", "Julia", "Matveeva", "qweqweqw@gmail.com"));
+            list.Add(new Advertisement("Education", "English", "Lessions", 2000, "+380635799100", "Dmytro", "Maryshchuk", "pidmogylnyi@gmail.com"));
+
+            CollectionAssert.Equals(expectedAdvert, adverse.Search(list, "+380635699990"));
+            CollectionAssert.Equals(expectedList, adverse.Search(list, 2000));
+            expectedList.Clear();
+            CollectionAssert.Equals(expectedList, adverse.Search(list, "Jora"));
         }
 
         [TestMethod]
-        public void Are_Results_Of_Sort_Equel()
+        public void SortTest()
         {
-            List<Advertisements.Ad> list = new List<Advertisements.Ad>();
-            List<Advertisements.Ad> excpectedList = new List<Advertisements.Ad>();
+            List<Advertisement> list = new List<Advertisement>();
+            List<Advertisement> excpectedList = new List<Advertisement>();
             Advertisements adverse = new Advertisements();
 
-            list.Add(new Advertisements.Ad("Education", "English", "Lessions", 1000, "+380635699990", "Dmytro"));
-            list.Add(new Advertisements.Ad("Education", "English", "Lessions", 3000, "+380635699990", "Dmytro"));
-            list.Add(new Advertisements.Ad("Education", "English", "Lessions", 500, "+380635699990", "Dmytro"));
+            list.Add(new Advertisement("Education", "English", "Lessions", 1000, "+380635699990", "Dmytro"));
+            list.Add(new Advertisement("Education", "English", "Lessions", 3000, "+380635699990", "Dmytro"));
+            list.Add(new Advertisement("Education", "English", "Lessions", 500, "+380635699990", "Dmytro"));
 
-            excpectedList.Add(new Advertisements.Ad("Education", "English", "Lessions", 500, "+380635699990", "Dmytro"));
-            excpectedList.Add(new Advertisements.Ad("Education", "English", "Lessions", 1000, "+380635699990", "Dmytro"));
-            excpectedList.Add(new Advertisements.Ad("Education", "English", "Lessions", 3000, "+380635699990", "Dmytro"));
+            excpectedList.Add(new Advertisement("Education", "English", "Lessions", 500, "+380635699990", "Dmytro"));
+            excpectedList.Add(new Advertisement("Education", "English", "Lessions", 1000, "+380635699990", "Dmytro"));
+            excpectedList.Add(new Advertisement("Education", "English", "Lessions", 3000, "+380635699990", "Dmytro"));
 
             CollectionAssert.Equals(excpectedList, adverse.Sort(list, 3));
             
@@ -45,17 +54,17 @@ namespace AdvertisementsTests
         }
 
         [TestMethod]
-        public void Is_It_Possiblie_To_Deserialize_From_Xml()
+        public void DeserializeXmlTest()
         {
-            List<Advertisements.Ad> list = new List<Advertisements.Ad>();
-            list.Add(new Advertisements.Ad("Education", "English", "Lessions", 1000, "+380635699990", "Dmytro"));
-            list.Add(new Advertisements.Ad("Education", "English", "Lessions", 3000, "+380635699990", "Dmytro"));
-            list.Add(new Advertisements.Ad("Education", "English", "Lessions", 500, "+380635699990", "Dmytro"));
+            List<Advertisement> list = new List<Advertisement>();
+            list.Add(new Advertisement("Education", "English", "Lessions", 1000, "+380635699990", "Dmytro"));
+            list.Add(new Advertisement("Education", "English", "Lessions", 3000, "+380635699990", "Dmytro"));
+            list.Add(new Advertisement("Education", "English", "Lessions", 500, "+380635699990", "Dmytro"));
 
-            List<Advertisements.Ad> excpectedList = list;
+            List<Advertisement> excpectedList = list;
             Advertisements adverse = new Advertisements();
 
-            XmlSerializer formatter = new XmlSerializer(typeof(List<Advertisements.Ad>));
+            XmlSerializer formatter = new XmlSerializer(typeof(List<Advertisement>));
             try
             {
                 using (FileStream fs = new FileStream("Test.xml", FileMode.Create))
@@ -64,15 +73,16 @@ namespace AdvertisementsTests
                     fs.Close();
                 }
                 list = null;
-                list = new List<Advertisements.Ad>();
+                list = new List<Advertisement>();
                 using (FileStream fs = new FileStream("Test.xml", FileMode.Open))
                 {
-                    list = (List<Advertisements.Ad>)formatter.Deserialize(fs);
+                    list = (List<Advertisement>)formatter.Deserialize(fs);
                     fs.Close();
                 }
 
 
             }
+
             catch (Exception e)
             {
                 throw e;
@@ -85,17 +95,17 @@ namespace AdvertisementsTests
         }
 
         [TestMethod]
-        public void Is_It_Possible_To_Deserialize_From_Json()
+        public void DeserializeLsonTest()
         {
-            List<Advertisements.Ad> list = new List<Advertisements.Ad>();
-            list.Add(new Advertisements.Ad("Education", "English", "Lessions", 1000, "+380635699990", "Dmytro"));
-            list.Add(new Advertisements.Ad("Education", "English", "Lessions", 3000, "+380635699990", "Dmytro"));
-            list.Add(new Advertisements.Ad("Education", "English", "Lessions", 500, "+380635699990", "Dmytro"));
+            List<Advertisement> list = new List<Advertisement>();
+            list.Add(new Advertisement("Education", "English", "Lessions", 1000, "+380635699990", "Dmytro"));
+            list.Add(new Advertisement("Education", "English", "Lessions", 3000, "+380635699990", "Dmytro"));
+            list.Add(new Advertisement("Education", "English", "Lessions", 500, "+380635699990", "Dmytro"));
 
-            List<Advertisements.Ad> excpectedList = list;
+            List<Advertisement> excpectedList = list;
             Advertisements adverse = new Advertisements();
 
-            XmlSerializer formatter = new XmlSerializer(typeof(List<Advertisements.Ad>));
+            XmlSerializer formatter = new XmlSerializer(typeof(List<Advertisement>));
             try
             {
                 using (StreamWriter file = File.CreateText("Test.json"))
@@ -105,11 +115,11 @@ namespace AdvertisementsTests
                     file.Close();
                 }
                 list = null;
-                list = new List<Advertisements.Ad>();
+                list = new List<Advertisement>();
                 JsonSerializer se = new JsonSerializer();
                 StreamReader re = new StreamReader("Test.json");
                 JsonTextReader reader = new JsonTextReader(re);
-                list = se.Deserialize<List<Advertisements.Ad>>(reader);
+                list = se.Deserialize<List<Advertisement>>(reader);
 
 
             }
@@ -124,22 +134,22 @@ namespace AdvertisementsTests
 
         }
         [TestMethod]
-        public void Is_Validator_Work_Correctly()
+        public void ValidatorTest()
         {
-            List<Advertisements.Ad> list = new List<Advertisements.Ad>();
-            List<Advertisements.Ad> excpectedList = new List<Advertisements.Ad>();
+            List<Advertisement> list = new List<Advertisement>();
+            List<Advertisement> excpectedList = new List<Advertisement>();
             Validation Valid = new Validation();
 
-            excpectedList.Add(new Advertisements.Ad("Education", "English", "Lessions", 1000, "+380635699990", "Dmytro"));
-            excpectedList.Add(new Advertisements.Ad("Education", "English", "Lessions", 3000, "0635699990", "Dmytro"));
-            excpectedList.Add(new Advertisements.Ad("Education", "English", "Lessions", 500, "+380635699990", "Dmytro"));
-            foreach (Advertisements.Ad ad in excpectedList)
+            excpectedList.Add(new Advertisement("Education", "English", "Lessions", 1000, "+380635699990", "Dmytro"));
+            excpectedList.Add(new Advertisement("Education", "English", "Lessions", 3000, "0635699990", "Dmytro"));
+            excpectedList.Add(new Advertisement("Education", "English", "Lessions", 500, "+380635699990", "Dmytro"));
+            foreach (Advertisement ad in excpectedList)
             {
                 if (Valid.IsValidType(ad.Type)
                    && Valid.IsValidName(ad.Name)
                    && Valid.IsValidPrice(ad.Price.ToString())
-                   && Valid.IsValidPhone(ad.PhoneNumber)
-                   && Valid.IsValidMainPerson(ad.MainPerson))
+                   && Valid.IsValidPhone(ad.Owner.PhoneNumber)
+                   && Valid.IsValidMainPerson(ad.Owner.Name))
                 {
                     list.Add(ad);
                 }

@@ -4,6 +4,7 @@ using System.Xml.Serialization;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using AdvertisementsServer;
 
 namespace Ad
 {
@@ -11,40 +12,56 @@ namespace Ad
     public class Advertisements
     {
 
-        public List<Ad> Array = new List<Ad>();
+        public List<Advertisement> AdvList;
         public string[] Types = new string[] { "Education", "Repair" };
+        private DbDatabase db;
+
+        public Advertisements()
+        {
+            db = new DbDatabase();
+            AdvList = db.GetAllAdvertisements();
+        }
 
         public int Count
         {
             get
             {
-                return Array.Count;
+                return AdvList.Count;
             }
         }
 
-        public void Add(Ad item)
+        public void Add(Advertisement item)
         {
-            Array.Add(item);
-            Serialize();
+            AdvList.Add(item);
+            db.AddAdvert(item);
         }
 
         public void Clear()
         {
-            Array = null;
-            Array = new List<Ad>();
-            Serialize();
+            AdvList = db.GetAllAdvertisements();
+            foreach (Advertisement item in AdvList)
+                db.RemoveAdvertisement(item.AdvertId);
+            AdvList = null;
+            AdvList = new List<Advertisement>();
         }
 
-        public bool Remove(Ad item)
+        public bool Remove(Advertisement item)
         {
-            Array.Remove(item);
-            Serialize();
-            return true;
+            try
+            {
+                AdvList.Remove(item);
+                db.RemoveAdvertisement(item.AdvertId);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
-        public List<Ad> Sort(List<Ad> list, int byWhat)                                       
+        public List<Advertisement> Sort(List<Advertisement> list, int byWhat)
         {
-            List<Ad> sortedList = null;
+            List<Advertisement> sortedList = null;
             switch (byWhat)
             {
                 case 1: //Name
@@ -60,11 +77,11 @@ namespace Ad
                     break;
 
                 case 4: //phone
-                    sortedList = list.OrderBy(a => a.PhoneNumber).ToList();
+                    sortedList = list.OrderBy(a => a.Person.PhoneNumber).ToList();
                     break;
 
                 case 5: //PersonName
-                    sortedList = list.OrderBy(a => a.MainPerson).ToList();
+                    sortedList = list.OrderBy(a => a.Person.PersonLastname).ToList();
                     break;
 
                 default:
@@ -74,43 +91,67 @@ namespace Ad
             return sortedList;
         }
 
-        public Ad Search(List<Ad> list, string keyword)
+        public List<Advertisement> Search(List<Advertisement> list, string keyword)
         {
-            foreach (Advertisements.Ad ser in list)
+            List<Advertisement> resultList = new List<Advertisement>();
+            double price;
+            foreach (Advertisement ser in list)
             {
-                if (ser.Name == keyword || ser.Description == keyword || ser.Price == double.Parse(keyword) || ser.PhoneNumber == keyword || ser.MainPerson == keyword)
-                    return ser;
+                try
+                {
+                    price = double.Parse(keyword);
+                }
+                catch (Exception e)
+                {
+                    price = -99;
+                }
+                if (ser.Type == keyword || ser.Name == keyword || ser.Description == keyword ||
+                    ser.Price == price || ser.Person.PhoneNumber == keyword || ser.Person.PersonFirstname == keyword ||
+                    ser.Person.PersonLastname == keyword || ser.Person.Email == keyword)
+                    resultList.Add(ser);
             }
-            return null;
+            return resultList;
         }
 
-
-        public void PrintAll(List<Ad> list)
+        public override string ToString()
         {
-            int index = 0;
-            foreach (Advertisements.Ad ser in list)
+            string result = "";
+            foreach (Advertisement ser in AdvList)
             {
-                Console.WriteLine("ID:{0}, Type: {1},  Name: {2}, Description: {3}, Price: {4}, Phone: {5}, Person: {6}", index++, ser.Type, ser.Name, ser.Description, ser.Price, ser.PhoneNumber, ser.MainPerson);
+                result += ser.ToString();
             }
+            return result;
+        }
+
+        public string ToString(List<Advertisement> list)
+        {
+            string result = "";
+            foreach (Advertisement ser in list)
+            {
+                result += ser.ToString();
+            }
+            return result;
         }
 
         public void Serialize()
         {
 
-            XmlSerializer formatter = new XmlSerializer(typeof(List<Ad>));
+            XmlSerializer formatter = new XmlSerializer(typeof(List<Advertisement>));
             using (FileStream fs = new FileStream("Services.xml", FileMode.Create))
             {
-                formatter.Serialize(fs, Array);
+                formatter.Serialize(fs, AdvList);
+                fs.Close();
             }
 
         }
 
         public void Deserialize()
         {
-            XmlSerializer formatter = new XmlSerializer(typeof(List<Ad>));
+            XmlSerializer formatter = new XmlSerializer(typeof(List<Advertisement>));
             using (FileStream fs = new FileStream("Services.xml", FileMode.Open))
             {
-                Array = (List<Ad>)formatter.Deserialize(fs);
+                AdvList = (List<Advertisement>)formatter.Deserialize(fs);
+                fs.Close();
             }
         }
 
@@ -118,7 +159,7 @@ namespace Ad
         {
             using (StreamWriter file = File.CreateText("Services.txt"))
             {
-                string json = JsonConvert.SerializeObject(Array);
+                string json = JsonConvert.SerializeObject(AdvList);
                 file.WriteLine(json);
                 file.Close();
             }
@@ -129,38 +170,8 @@ namespace Ad
             JsonSerializer se = new JsonSerializer();
             StreamReader re = new StreamReader("Services.txt");
             JsonTextReader reader = new JsonTextReader(re);
-            Array = se.Deserialize<List<Ad>>(reader);
-        }
-
-
-        public class Ad
-        {
-            public string Type { get; set; }
-            public string Name { get; set; }
-            public string Description { get; set; }
-            public double Price { get; set; }
-            public string PhoneNumber { get; set; }
-            public string MainPerson { get; set; }
-
-            public Ad() { }
-
-            public Ad(string type, string name, string description, double price, string phoneNumber, string mainPerson)
-            {
-                this.Type = type;
-                this.Name = name;
-                this.Description = description;
-                this.Price = price;
-                this.PhoneNumber = phoneNumber;
-                this.MainPerson = mainPerson;
-            }
-
-            public string Info()
-            {
-                return String.Format("ID:{0}, Type: {1},  Name: {2}, Description: {3}, Price: {4}, Phone: {5}, Person: {6}", 0, Type, Name, Description, Price, PhoneNumber, MainPerson);
-            }
-
-        }
-
-        
+            AdvList = se.Deserialize<List<Advertisement>>(reader);
+            re.Close();
+        }        
     }
 }

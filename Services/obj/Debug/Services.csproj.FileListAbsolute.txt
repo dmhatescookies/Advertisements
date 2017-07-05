@@ -22,3 +22,7 @@ C:\Users\Dmytro Maryshchuk\Source\Repos\Advertisements\Services\bin\Debug\xunit.
 C:\Users\Dmytro Maryshchuk\Source\Repos\Advertisements\Services\bin\Debug\xunit.core.xml
 C:\Users\Dmytro Maryshchuk\Source\Repos\Advertisements\Services\bin\Debug\xunit.execution.desktop.xml
 C:\Users\Dmytro Maryshchuk\Source\Repos\Advertisements\Services\obj\Debug\Services.csprojResolveAssemblyReference.cache
+C:\Users\Dmytro Maryshchuk\Source\Repos\Advertisements\Services\bin\Debug\EntityFramework.dll
+C:\Users\Dmytro Maryshchuk\Source\Repos\Advertisements\Services\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Dmytro Maryshchuk\Source\Repos\Advertisements\Services\bin\Debug\EntityFramework.xml
+C:\Users\Dmytro Maryshchuk\Source\Repos\Advertisements\Services\bin\Debug\EntityFramework.SqlServer.xml

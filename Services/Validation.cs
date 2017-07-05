@@ -32,10 +32,26 @@ namespace Ad
             return false;
         }
 
-        public bool IsValidMainPerson(string name)
+        public bool IsValidFirstname(string name)
+        {
+            int number;
+            if (name.Length > 2 && name.Length < 40 && !int.TryParse(name, out number))
+                return true;
+            return false;
+        }
+
+        public bool IsValidLastname(string name)
         {
             int number;
             if (name.Length > 5 && name.Length < 40 && !int.TryParse(name, out number))
+                return true;
+            return false;
+        }
+
+        public bool IsValidEmail(string email)
+        {
+            Regex expression = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+            if (expression.IsMatch(email))
                 return true;
             return false;
         }
@@ -47,6 +63,15 @@ namespace Ad
                 return true;
             return false;
         }
+
+        public bool IsValidPassword(string pass)
+        {
+            Regex expression = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,15}$");
+            if (expression.IsMatch(pass))
+                return true;
+            return false;
+        }
+
 
 
     }
