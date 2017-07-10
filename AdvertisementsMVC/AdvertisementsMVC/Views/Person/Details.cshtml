@@ -1,0 +1,57 @@
+﻿@model AdvertisementsMVC.Person
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <h4>Person</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PersonFirstname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PersonFirstname)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PersonLastname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PersonLastname)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RegistrationTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RegistrationTime)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Show all posts", "ShowAllPosts", new { id = Model.PersonId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

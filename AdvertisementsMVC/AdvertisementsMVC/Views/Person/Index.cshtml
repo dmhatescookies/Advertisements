@@ -1,0 +1,35 @@
+﻿@model IEnumerable<AdvertisementsMVC.Person>
+
+@{
+    ViewBag.Title = "People";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>All people on A D</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PersonFirstname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PersonLastname)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.PersonFirstname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PersonLastname)
+        </td>
+        <td>
+            @Html.ActionLink("Details", "Details", new { id=item.PersonId })
+        </td>
+    </tr>
+}
+
+</table>
