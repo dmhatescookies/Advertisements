@@ -22,7 +22,7 @@
             @Html.DisplayNameFor(model => model.Price)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PersonId)
+            <label for="model.PersonId">Author</label>
         </th>
         <th></th>
     </tr>
@@ -42,7 +42,8 @@
             @Html.DisplayFor(modelItem => item.Price)
         </td>
         <td>
-            @Html.ActionLink("Author", "AuthorDetails", new { id = item.PersonId })
+            @Html.ActionLink(AdvertisementsServer.Global.db.GetPerson(item.PersonId).PersonFirstname + " " +
+           AdvertisementsServer.Global.db.GetPerson(item.PersonId).PersonLastname, "AuthorDetails", new { id = item.PersonId })
         </td>
         <td>
             @Html.ActionLink("Details", "Details", new { id=item.AdvertId }) 

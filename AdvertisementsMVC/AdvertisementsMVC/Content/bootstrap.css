@@ -47,6 +47,22 @@ audio:not([controls]) {
   height: 0;
 }
 
+form input[type="button"] {
+    background: rgba(148, 186, 101, 0.7);
+    box-shadow: 0 3px 0 0 rgba(123, 163, 73, 0.7);
+    border-radius: 2px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    display: block;
+    font-size: 2em;
+    line-height: 1.6em;
+    margin: 2em 0 0;
+    outline: none;
+    padding: .8em 0;
+    text-shadow: 0 1px #68B25B;
+}
+
 [hidden] {
   display: none;
 }

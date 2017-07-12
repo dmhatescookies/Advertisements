@@ -11,26 +11,22 @@ namespace AdvertisementsMVC.Controllers
 {
     public class PersonController : Controller
     {
-        public List<Person> PersonList = new List<Person>();
-        public List<Advertisement> AdvertisementsList = new List<Advertisement>();
-        private DbDatabase db = new DbDatabase();
-        private Validation Valid = new Validation(); 
 
         public ActionResult Index()
         {
-            PersonList = db.GetAllPersons();
-            return View(PersonList);
+            Global.PersonList = Global.db.GetAllPersons();
+            return View(Global.PersonList);
         }   
 
         public ActionResult Details(int id)
         {
-            Person person = db.GetPerson(id);
+            Person person = Global.db.GetPerson(id);
             return View(person);
         }
 
         public ActionResult Edit (int id)
         {
-            Person person = db.GetPerson(id);
+            Person person = Global.db.GetPerson(id);
             return View(person);
         }
 
@@ -42,13 +38,13 @@ namespace AdvertisementsMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var personToUpdate = db.GetPerson(id);
+            var personToUpdate = Global.db.GetPerson(id);
             if (TryUpdateModel(personToUpdate, "",
                new string[] { "PersonFirstname", "PersonLastname", "PhoneNumber", "Email", "RegistrationTime", "Password" }))
             {
                 try
                 {
-                    db.Save();
+                    Global.db.Save();
 
                     return RedirectToAction("Index");
                 }
@@ -67,6 +63,8 @@ namespace AdvertisementsMVC.Controllers
 
         public  ActionResult SignIn()
         {
+            if (Global.AuthorizedUser != null)
+                RedirectToAction("Create", "Advertisements");
             return View();
         }
 
@@ -87,9 +85,9 @@ namespace AdvertisementsMVC.Controllers
                 ModelState.Remove("PhoneNumber");
                 if (ModelState.IsValid)
                 {
-                    if (db.SearchPerson(person.Email)[0].Password == person.Password)
+                    if (Global.db.SearchPerson(person.Email)[0].Password == person.Password)
                         return RedirectToAction("Authorization", "Advertisements", person);
-                    return View(person);
+                    return View(Global.db.SearchPerson(person.Email)[0]);
                 }
             }
             catch (RetryLimitExceededException)
@@ -101,7 +99,7 @@ namespace AdvertisementsMVC.Controllers
 
         public ActionResult Delete(int id)
         {
-            Person person = db.GetPerson(id);
+            Person person = Global.db.GetPerson(id);
             return View(person);
         }
 
@@ -114,8 +112,8 @@ namespace AdvertisementsMVC.Controllers
                 if (ModelState.IsValid)
                 { 
                     person.RegistrationTime = DateTime.Now.ToString();
-                    db.AddPerson(person);
-                    Person tempPerson = db.SearchPerson(person.Email)[0];
+                    Global.db.AddPerson(person);
+                    Person tempPerson = Global.db.SearchPerson(person.Email)[0];
                     return RedirectToAction("Authorization", "Advertisements", tempPerson);
                 }
             }
@@ -128,23 +126,23 @@ namespace AdvertisementsMVC.Controllers
 
         public ActionResult ShowAllPosts (int id)
         {
-            AdvertisementsList = db.GetAllUserAdvertisements(id);
-            return View(AdvertisementsList);
+            Global.AdvertisementsList = Global.db.GetAllUserAdvertisements(id);
+            return View(Global.AdvertisementsList);
         }
 
         public int Count
         {
             get
             {
-                return PersonList.Count;
+                return Global.PersonList.Count;
             }
         }
 
         public void Add(Person item)
         {
-            if (!db.PersonExist(item))
-                db.AddPerson(item);
-            PersonList = db.GetAllPersons();
+            if (!Global.db.PersonExist(item))
+                Global.db.AddPerson(item);
+            Global.PersonList = Global.db.GetAllPersons();
         }
 
 
@@ -175,8 +173,8 @@ namespace AdvertisementsMVC.Controllers
         public List<Person> Search(string keyword)
         {
             List<Person> resultList = new List<Person>();
-            PersonList = db.GetAllPersons();
-            foreach (Person person in PersonList)
+            Global.PersonList = Global.db.GetAllPersons();
+            foreach (Person person in Global.PersonList)
                 if (person.PersonFirstname == keyword || person.PersonLastname == keyword || person.PhoneNumber == keyword ||
                     person.Email == keyword)
                     resultList.Add(person);
@@ -187,7 +185,7 @@ namespace AdvertisementsMVC.Controllers
         public override string ToString()
         {
             string result = "";
-            foreach (Person person in PersonList)
+            foreach (Person person in Global.PersonList)
             {
                 result += person.ToString();
             }

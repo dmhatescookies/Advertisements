@@ -30,7 +30,7 @@ namespace AdvertisementsMVC
         public string PhoneNumber { get; set; }
 
         [Required]
-        [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", ErrorMessage = "Invalid email")]
+        [EmailAddress(ErrorMessage = "Invalid email")]
         [Unique(ErrorMessage = "This email already exists")]
         [Display(Name = "Email")]
         public string Email { get; set; }
@@ -38,9 +38,8 @@ namespace AdvertisementsMVC
         public string RegistrationTime { get; set; }
 
         [Required]
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,15}$", ErrorMessage = "Upper-case, low-case and digits are required")]
-        [StringLength(15, ErrorMessage = "Password musst be bettwen 8-15 characters.")]
-        [MinLength(8, ErrorMessage = "Password musst be bettwen 8-15 characters.") ]
+        [MinLength(6, ErrorMessage = "Password length must be greater then 8")]
+        [RegularExpression(@"(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}", ErrorMessage = "Upper-case, low-case and digits are required")]
         [Display(Name = "Password")]
         public string Password { get; set; }
 

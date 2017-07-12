@@ -150,7 +150,7 @@
     <Compile Include="Controllers\AdvertisementsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
-    <Compile Include="Controllers\RegistrationController.cs" />
+    <Compile Include="DB\RegistrationController.cs" />
     <Compile Include="DB\AdvertisementsContext.cs" />
     <Compile Include="DB\DbDatabase.cs" />
     <Compile Include="DB\Global.cs" />

@@ -57,7 +57,7 @@ namespace AdvertisementsServer
             List<Advertisement> resultList = new List<Advertisement>();
             List<Advertisement> list = db.Advertisements.ToList();
             foreach (Advertisement adv in list)
-                if (adv.Person.PersonId == id)
+                if (adv.PersonId == id)
                     resultList.Add(adv);
             return resultList;
         }
