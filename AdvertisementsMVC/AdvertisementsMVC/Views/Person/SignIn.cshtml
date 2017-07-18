@@ -1,13 +1,12 @@
 ﻿
 @{
-    ViewBag.Title = "Authorization";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div>
-    @Html.ActionLink("Sign In", "Create", "Person")
-</div>
-
-<div>
-    @Html.ActionLink("Log In", "Login", "Person" ) 
+<div class="form-group" style=" margin-top: 50px; margin-bottom: 50px">
+    <e>
+    <td><button type="button" class="btn btn-secondary btn-lg">@Html.ActionLink("Log In", "LogIn")</button>
+        <button type="button" class="btn btn-secondary btn-lg">@Html.ActionLink("Sign Up", "Create", "Person")</button>
+    </td>
+    </e>
 </div>

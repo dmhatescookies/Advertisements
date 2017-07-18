@@ -18,8 +18,16 @@ namespace AdvertisementsMVC.Controllers
 
         public ActionResult Authorization(Person person)
         {
-            Global.AuthorizedUser = person;
-            return RedirectToAction("Create");
+            Session["PersonId"] = person.PersonId.ToString();
+            return RedirectToAction("Cabinet", "Person", new { id = person.PersonId});
+        }
+
+        public ActionResult Details(int id)
+        {
+            Advertisement advert = Global.db.GetAdvert(id);
+            ViewBag.Message = Global.db.GetPerson(advert.PersonId).PersonFirstname + " " +
+                Global.db.GetPerson(advert.PersonId).PersonLastname;
+            return View(advert);
         }
 
         public ActionResult AuthorDetails(int id)
@@ -27,9 +35,10 @@ namespace AdvertisementsMVC.Controllers
             return RedirectToAction("Details", "Person", new { id = id });
         }
 
+
         public ActionResult Create ()
         {
-            if (Global.AuthorizedUser == null)
+            if (Session["PersonId"] == null)
             {
                 return RedirectToAction("SignIn", "Person");
             }
@@ -44,14 +53,14 @@ namespace AdvertisementsMVC.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    advert.PersonId = Global.AuthorizedUser.PersonId;
+                    advert.PersonId = int.Parse(Session["PersonId"].ToString());
                     Global.db.AddAdvert(advert);
                     return RedirectToAction("Index");
                 }
             }
             catch (Exception)
             {
-
+                ModelState.AddModelError("", "Authorization Error");
             }
             return View(advert);
         }

@@ -1,4 +1,22 @@
-﻿<!DOCTYPE html>
+﻿@{ 
+    string Message = "";
+} 
+
+@{
+    if (Session["PersonId"] != null)
+    {
+            Message = "Hello, " + AdvertisementsServer.Global.db.GetPerson(int.Parse((Session["PersonId"].ToString()))).PersonFirstname + " " +
+            AdvertisementsServer.Global.db.GetPerson(int.Parse((Session["PersonId"].ToString()))).PersonLastname;
+    }
+    else
+    {
+        Message = "Log In";
+    }
+}
+
+
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -19,11 +37,11 @@
                 @Html.ActionLink("A D", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav" style="width: 1000px">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("Advertisements", "Index", "Advertisements")</li>
                     <li>@Html.ActionLink("People", "Index", "Person")</li>
-                    <li style="float: right">@Html.ActionLink("Log In", "LogIn", "Person")</li>
+                    <li style="float: right">@Html.ActionLink(Message, "SignIn", "Person")</li>
                 </ul>
             </div>
         </div>

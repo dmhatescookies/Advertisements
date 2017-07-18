@@ -47,6 +47,19 @@ audio:not([controls]) {
   height: 0;
 }
 
+
+_buttons.scss:83 .btn-group-lg > .btn, .btn-lg {
+    padding: .75rem 1.5rem;
+    font-size: 1.25rem;
+    border-radius: .3rem;
+}
+
+_buttons.scss:10 .btn-secondary {
+    color: #292b2c;
+    background-color: #fff;
+    border-color: #ccc;
+}
+
 form input[type="button"] {
     background: rgba(148, 186, 101, 0.7);
     box-shadow: 0 3px 0 0 rgba(123, 163, 73, 0.7);

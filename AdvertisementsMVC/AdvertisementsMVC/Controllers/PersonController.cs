@@ -16,7 +16,7 @@ namespace AdvertisementsMVC.Controllers
         {
             Global.PersonList = Global.db.GetAllPersons();
             return View(Global.PersonList);
-        }   
+        }
 
         public ActionResult Details(int id)
         {
@@ -24,7 +24,7 @@ namespace AdvertisementsMVC.Controllers
             return View(person);
         }
 
-        public ActionResult Edit (int id)
+        public ActionResult Edit(int id)
         {
             Person person = Global.db.GetPerson(id);
             return View(person);
@@ -32,21 +32,22 @@ namespace AdvertisementsMVC.Controllers
 
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public ActionResult EditPost(int id)
+        public ActionResult Edit([Bind(Include = "PersonId, PersonFirstname, PersonLastname, PhoneNumber")] Person person)
         {
+            int id = person.PersonId;
             if (id == 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var personToUpdate = Global.db.GetPerson(id);
             if (TryUpdateModel(personToUpdate, "",
-               new string[] { "PersonFirstname", "PersonLastname", "PhoneNumber", "Email", "RegistrationTime", "Password" }))
+               new string[] { "PersonFirstname", "PersonLastname", "PhoneNumber" }))  //TODO update bug
             {
                 try
                 {
                     Global.db.Save();
 
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Details", "Person", new {id = id });
                 }
                 catch (RetryLimitExceededException)
                 {
@@ -58,19 +59,34 @@ namespace AdvertisementsMVC.Controllers
 
         public ActionResult Create()
         {
-            return View();  
-        }
-
-        public  ActionResult SignIn()
-        {
-            if (Global.AuthorizedUser != null)
-                RedirectToAction("Create", "Advertisements");
             return View();
         }
 
-        public ActionResult LogIn ()
+        public ActionResult SignIn()
         {
+            if (Session["PersonId"] != null)
+                return RedirectToAction("Cabinet", new { id = int.Parse(Session["PersonId"].ToString()) });
             return View();
+        }
+
+        public ActionResult LogIn()
+        {
+            if (Session["PersonId"] != null)
+                return RedirectToAction("Cabinet", new { id = int.Parse(Session["PersonId"].ToString()) });
+            return View();
+        }
+
+        public ActionResult LogOut()
+        {
+            if (Session["PersonId"] != null)
+                Session.Remove("PersonId");
+            return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult Cabinet(int id)
+        {
+            Global.AdvertisementsList = Global.db.GetAllUserAdvertisements(id);
+            return View(Global.AdvertisementsList);
         }
 
         [HttpPost, ActionName("LogIn")]
@@ -83,10 +99,13 @@ namespace AdvertisementsMVC.Controllers
                 ModelState.Remove("PersonFirstname");
                 ModelState.Remove("PersonLastname");
                 ModelState.Remove("PhoneNumber");
+                ModelState.Remove("ConfirmPassword");
+
                 if (ModelState.IsValid)
                 {
                     if (Global.db.SearchPerson(person.Email)[0].Password == person.Password)
-                        return RedirectToAction("Authorization", "Advertisements", person);
+                        return RedirectToAction("Authorization", "Advertisements", Global.db.SearchPerson(person.Email)[0]);
+                    ModelState.AddModelError("", "Email or password is wrong.");
                     return View(Global.db.SearchPerson(person.Email)[0]);
                 }
             }
@@ -105,7 +124,7 @@ namespace AdvertisementsMVC.Controllers
 
         [HttpPost, ActionName("Create")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PersonFirstname, PersonLastname, PhoneNumber, Email, Password")]Person person)
+        public ActionResult Create([Bind(Include = "PersonFirstname, PersonLastname, PhoneNumber, Email, Password, ConfirmPassword")]Person person)
         {
             try
             {
@@ -128,6 +147,11 @@ namespace AdvertisementsMVC.Controllers
         {
             Global.AdvertisementsList = Global.db.GetAllUserAdvertisements(id);
             return View(Global.AdvertisementsList);
+        }
+
+        public ActionResult AdvertDetails (int id)
+        {
+            return RedirectToAction("Details", "Advertisements", new { id = id });
         }
 
         public int Count

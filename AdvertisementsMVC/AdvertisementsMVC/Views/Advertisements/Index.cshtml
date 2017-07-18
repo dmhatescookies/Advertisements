@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <p>
-    @Html.ActionLink("Create New", "Create")
+    <button type="button" class="btn btn-secondary btn-lg">@Html.ActionLink("Create your AD", "Create")</button>
 </p>
 <table class="table">
     <tr>
@@ -46,7 +46,7 @@
            AdvertisementsServer.Global.db.GetPerson(item.PersonId).PersonLastname, "AuthorDetails", new { id = item.PersonId })
         </td>
         <td>
-            @Html.ActionLink("Details", "Details", new { id=item.AdvertId }) 
+            @Html.ActionLink("Details", "Details", new { id=item.AdvertId })
         </td>
     </tr>
 }
