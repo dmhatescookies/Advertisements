@@ -1,16 +1,28 @@
 ﻿@{ 
     string Message = "";
+    string firstActionLink = "";
+    string secondActionLink = "";
+    string firstActionDisplayName = "";
+    string secondActionDisplayName = "";
 } 
 
 @{
     if (Session["PersonId"] != null)
     {
-            Message = "Hello, " + AdvertisementsServer.Global.db.GetPerson(int.Parse((Session["PersonId"].ToString()))).PersonFirstname + " " +
-            AdvertisementsServer.Global.db.GetPerson(int.Parse((Session["PersonId"].ToString()))).PersonLastname;
+        Message = AdvertisementsServer.Global.DataAccess.GetPerson(int.Parse((Session["PersonId"].ToString()))).PersonFirstname + " " +
+        AdvertisementsServer.Global.DataAccess.GetPerson(int.Parse((Session["PersonId"].ToString()))).PersonLastname;
+        firstActionLink = "Cabinet";
+        firstActionDisplayName = "Cabinet";
+        secondActionLink = "LogOut";
+        secondActionDisplayName = "Log Out";
     }
     else
     {
         Message = "Log In";
+        firstActionLink = "LogIn";
+        firstActionDisplayName = "Log In";
+        secondActionLink = "Create";
+        secondActionDisplayName = "Sign Up";
     }
 }
 
@@ -34,14 +46,25 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("A D", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("A D", "Index", "Advertisements", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav" style="width: 1000px">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("Advertisements", "Index", "Advertisements")</li>
                     <li>@Html.ActionLink("People", "Index", "Person")</li>
-                    <li style="float: right">@Html.ActionLink(Message, "SignIn", "Person")</li>
+                    @*<li style="float: right">@Html.ActionLink(Message, "SignIn", "Person")</li>*@
+                    <li style="float: right">
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                                @Message
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink(firstActionDisplayName, firstActionLink, "Person")</li>
+                                <li>@Html.ActionLink(secondActionDisplayName, secondActionLink, "Person")</li>
+                            </ul>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -50,7 +73,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Advertisements application</p>
         </footer>
     </div>
 

@@ -11,14 +11,30 @@ namespace AdvertisementsMVC
         [XmlIgnore]
         [Key]
         public int AdvertId { get; private set; }
+
         public string Type { get; set; }
-        public string Name { get; set; }
+
+        [Required(ErrorMessage = "This field is required")]
+        [StringLength(50, ErrorMessage = "Title cannot be longer than 50 characters")]
+        [RegularExpression(@"^[a-zA-Z]{1,}$", ErrorMessage = "Invalid title")]
+        [Display(Name = "Title")]
+        public string Title { get; set; }
+
+        [Required(ErrorMessage = "This field is required")]
+        [StringLength(300, ErrorMessage = "Description cannot be longer than 300 characters")]
+        [Display(Name = "Description")]
         public string Description { get; set; }
+
+        [Required(ErrorMessage = "This field is required")]
+        [RegularExpression(@"^[0-9]{1,}$", ErrorMessage = "Invalid price")]
+        [Display(Name = "Price")]
         public int Price { get; set; }
+
+
         [ForeignKey("PersonId")]
         [NotMapped]
         internal protected virtual Person Person { get; set; }
-        //[XmlIgnore]
+
         public int PersonId { get; set; }
 
 
@@ -30,7 +46,7 @@ namespace AdvertisementsMVC
             }
 
             Advertisement forCompare = (Advertisement)obj;
-            return this.Name.Equals(forCompare.Name) &&
+            return this.Title.Equals(forCompare.Title) &&
                 this.Person.Email.Equals(forCompare.Person.Email);
         }
 
@@ -44,7 +60,7 @@ namespace AdvertisementsMVC
         public Advertisement(string type, string name, string description, int price, Person person)
         {
             this.Type = type;
-            this.Name = name;
+            this.Title = name;
             this.Description = description;
             this.Price = price;
             this.PersonId = person.PersonId;
@@ -56,7 +72,7 @@ namespace AdvertisementsMVC
             this.Person = db.GetPerson(this.PersonId);
             return String.Format("index: {0}, Type: {1},  Name: {2}, Description: " +
                 "{3}, Price: {4}, Phone: {5}, Owner: {6} {7}\n",
-                 AdvertId, Type, Name, Description, Price, Person.PhoneNumber, Person.PersonFirstname, Person.PersonLastname);
+                 AdvertId, Type, Title, Description, Price, Person.PhoneNumber, Person.PersonFirstname, Person.PersonLastname);
         }
     }
 }

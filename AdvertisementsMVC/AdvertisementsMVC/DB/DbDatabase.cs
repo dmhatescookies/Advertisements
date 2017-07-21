@@ -96,11 +96,38 @@ namespace AdvertisementsServer
             db.SaveChanges();
         }
 
+        public void UpdatePerson(Person person)
+        {
+            Person updatePerson = db.Persons.FirstOrDefault(x => x.PersonId == person.PersonId);
+            db.Configuration.ValidateOnSaveEnabled = false;
+            if (updatePerson != null)
+            {
+                updatePerson.PhoneNumber = person.PhoneNumber;
+                updatePerson.PersonFirstname = person.PersonFirstname;
+                updatePerson.PersonLastname = person.PersonLastname;
+            }
+            db.SaveChanges();
+        }
+
+
+        public void UpdateAdvertisement(Advertisement adv)
+        {
+            Advertisement updateAdv = db.Advertisements.FirstOrDefault(x => x.AdvertId == adv.AdvertId);
+            if (updateAdv != null)
+            {
+                updateAdv.Type = adv.Type;
+                updateAdv.Title = adv.Title;
+                updateAdv.Description = adv.Description;
+                updateAdv.Price = adv.Price;
+            }
+            db.SaveChanges();
+        }
+
         public void Create(List<Advertisement> services)
         {
             foreach (Advertisement adv in services)
                 if (!db.Advertisements.ToList().Any(x => x.Type == adv.Type
-                                               && x.Name == adv.Name
+                                               && x.Title == adv.Title
                                                && x.PersonId == adv.PersonId))
                     db.Advertisements.Add(adv);
             db.SaveChanges();

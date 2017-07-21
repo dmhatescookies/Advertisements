@@ -12,7 +12,7 @@ namespace AdvertisementsMVC.Controllers
 
         public ActionResult Index()
         {
-            Global.AdvertisementsList = Global.db.GetAllAdvertisements();
+            Global.AdvertisementsList = Global.DataAccess.GetAllAdvertisements();
             return View(Global.AdvertisementsList);
         }
 
@@ -24,9 +24,9 @@ namespace AdvertisementsMVC.Controllers
 
         public ActionResult Details(int id)
         {
-            Advertisement advert = Global.db.GetAdvert(id);
-            ViewBag.Message = Global.db.GetPerson(advert.PersonId).PersonFirstname + " " +
-                Global.db.GetPerson(advert.PersonId).PersonLastname;
+            Advertisement advert = Global.DataAccess.GetAdvert(id);
+            ViewBag.Message = Global.DataAccess.GetPerson(advert.PersonId).PersonFirstname + " " +
+                Global.DataAccess.GetPerson(advert.PersonId).PersonLastname;
             return View(advert);
         }
 
@@ -47,14 +47,14 @@ namespace AdvertisementsMVC.Controllers
 
         [HttpPost, ActionName("Create")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Type, Name, Description, Price")]Advertisement advert)
+        public ActionResult Create([Bind(Include = "Type, Title, Description, Price")]Advertisement advert)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
                     advert.PersonId = int.Parse(Session["PersonId"].ToString());
-                    Global.db.AddAdvert(advert);
+                    Global.DataAccess.AddAdvert(advert);
                     return RedirectToAction("Index");
                 }
             }
@@ -63,6 +63,37 @@ namespace AdvertisementsMVC.Controllers
                 ModelState.AddModelError("", "Authorization Error");
             }
             return View(advert);
+        }
+
+        public ActionResult Edit(int id)
+        {
+            Advertisement Advertise = Global.DataAccess.GetAdvert(id);
+            return View(Advertise);
+        }
+
+        [HttpPost, ActionName("Edit")]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(Advertisement advert)
+        {
+            ModelState.Remove("PersonId");
+            if (!ModelState.IsValid)
+                throw new ArgumentException();
+            try
+            {
+                Global.DataAccess.UpdateAdvertisement(advert);
+                return RedirectToAction("Index");
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public ActionResult Remove (int id)
+        {
+            Global.DataAccess.RemoveAdvertisement(id);
+
+            return RedirectToAction("Cabinet", "Person");
         }
     }
 }

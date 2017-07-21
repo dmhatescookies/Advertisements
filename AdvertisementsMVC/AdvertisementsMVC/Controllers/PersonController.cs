@@ -11,50 +11,41 @@ namespace AdvertisementsMVC.Controllers
 {
     public class PersonController : Controller
     {
-
         public ActionResult Index()
         {
-            Global.PersonList = Global.db.GetAllPersons();
+            Global.PersonList = Global.DataAccess.GetAllPersons();
             return View(Global.PersonList);
         }
 
         public ActionResult Details(int id)
         {
-            Person person = Global.db.GetPerson(id);
+            Person person = Global.DataAccess.GetPerson(id);
             return View(person);
         }
 
         public ActionResult Edit(int id)
         {
-            Person person = Global.db.GetPerson(id);
+            Person person = Global.DataAccess.GetPerson(id);
             return View(person);
         }
 
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PersonId, PersonFirstname, PersonLastname, PhoneNumber")] Person person)
+        public ActionResult Edit (Person updatePerson)
         {
-            int id = person.PersonId;
-            if (id == 0)
+            ModelState.Remove("Email");
+            ModelState.Remove("PhoneNumber");
+            ModelState.Remove("ConfirmPassword");
+            ModelState.Remove("Password");
+            try
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                Global.DataAccess.UpdatePerson(updatePerson);
+                return RedirectToAction("Cabinet");
             }
-            var personToUpdate = Global.db.GetPerson(id);
-            if (TryUpdateModel(personToUpdate, "",
-               new string[] { "PersonFirstname", "PersonLastname", "PhoneNumber" }))  //TODO update bug
+            catch
             {
-                try
-                {
-                    Global.db.Save();
-
-                    return RedirectToAction("Details", "Person", new {id = id });
-                }
-                catch (RetryLimitExceededException)
-                {
-                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
-                }
+                return View(updatePerson);
             }
-            return View(personToUpdate);
         }
 
         public ActionResult Create()
@@ -62,6 +53,11 @@ namespace AdvertisementsMVC.Controllers
             return View();
         }
 
+        public ActionResult RemoveAdvertisement(int id)
+        {
+            return RedirectToAction("Remove", "Advertisements", new { id = id });
+        }
+           
         public ActionResult SignIn()
         {
             if (Session["PersonId"] != null)
@@ -80,12 +76,22 @@ namespace AdvertisementsMVC.Controllers
         {
             if (Session["PersonId"] != null)
                 Session.Remove("PersonId");
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Advertisements");
         }
 
-        public ActionResult Cabinet(int id)
+        public ActionResult EditAdvertisement (int id)
         {
-            Global.AdvertisementsList = Global.db.GetAllUserAdvertisements(id);
+            return RedirectToAction("Edit", "Advertisements", new { id = id });
+        }
+
+        public ActionResult Cabinet(int? id)
+        {
+            int Id = 0;
+            if (id == null)
+                Id = int.Parse(Session["PersonId"].ToString());
+            else
+                Id = (int)id;
+            Global.AdvertisementsList = Global.DataAccess.GetAllUserAdvertisements(Id);
             return View(Global.AdvertisementsList);
         }
 
@@ -103,10 +109,10 @@ namespace AdvertisementsMVC.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    if (Global.db.SearchPerson(person.Email)[0].Password == person.Password)
-                        return RedirectToAction("Authorization", "Advertisements", Global.db.SearchPerson(person.Email)[0]);
+                    if (Global.DataAccess.SearchPerson(person.Email)[0].Password == person.Password)
+                        return RedirectToAction("Authorization", "Advertisements", Global.DataAccess.SearchPerson(person.Email)[0]);
                     ModelState.AddModelError("", "Email or password is wrong.");
-                    return View(Global.db.SearchPerson(person.Email)[0]);
+                    return View(Global.DataAccess.SearchPerson(person.Email)[0]);
                 }
             }
             catch (RetryLimitExceededException)
@@ -118,7 +124,7 @@ namespace AdvertisementsMVC.Controllers
 
         public ActionResult Delete(int id)
         {
-            Person person = Global.db.GetPerson(id);
+            Person person = Global.DataAccess.GetPerson(id);
             return View(person);
         }
 
@@ -131,8 +137,8 @@ namespace AdvertisementsMVC.Controllers
                 if (ModelState.IsValid)
                 { 
                     person.RegistrationTime = DateTime.Now.ToString();
-                    Global.db.AddPerson(person);
-                    Person tempPerson = Global.db.SearchPerson(person.Email)[0];
+                    Global.DataAccess.AddPerson(person);
+                    Person tempPerson = Global.DataAccess.SearchPerson(person.Email)[0];
                     return RedirectToAction("Authorization", "Advertisements", tempPerson);
                 }
             }
@@ -145,7 +151,7 @@ namespace AdvertisementsMVC.Controllers
 
         public ActionResult ShowAllPosts (int id)
         {
-            Global.AdvertisementsList = Global.db.GetAllUserAdvertisements(id);
+            Global.AdvertisementsList = Global.DataAccess.GetAllUserAdvertisements(id);
             return View(Global.AdvertisementsList);
         }
 
@@ -164,9 +170,9 @@ namespace AdvertisementsMVC.Controllers
 
         public void Add(Person item)
         {
-            if (!Global.db.PersonExist(item))
-                Global.db.AddPerson(item);
-            Global.PersonList = Global.db.GetAllPersons();
+            if (!Global.DataAccess.PersonExist(item))
+                Global.DataAccess.AddPerson(item);
+            Global.PersonList = Global.DataAccess.GetAllPersons();
         }
 
 
@@ -197,7 +203,7 @@ namespace AdvertisementsMVC.Controllers
         public List<Person> Search(string keyword)
         {
             List<Person> resultList = new List<Person>();
-            Global.PersonList = Global.db.GetAllPersons();
+            Global.PersonList = Global.DataAccess.GetAllPersons();
             foreach (Person person in Global.PersonList)
                 if (person.PersonFirstname == keyword || person.PersonLastname == keyword || person.PhoneNumber == keyword ||
                     person.Email == keyword)

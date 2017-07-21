@@ -13,7 +13,7 @@
             @Html.DisplayNameFor(model => model.Type)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.Title)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Description)
@@ -33,7 +33,7 @@
             @Html.DisplayFor(modelItem => item.Type)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Name)
+            @Html.DisplayFor(modelItem => item.Title)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Description)
@@ -42,8 +42,8 @@
             @Html.DisplayFor(modelItem => item.Price)
         </td>
         <td>
-            @Html.ActionLink(AdvertisementsServer.Global.db.GetPerson(item.PersonId).PersonFirstname + " " +
-           AdvertisementsServer.Global.db.GetPerson(item.PersonId).PersonLastname, "AuthorDetails", new { id = item.PersonId })
+            @Html.ActionLink(AdvertisementsServer.Global.DataAccess.GetPerson(item.PersonId).PersonFirstname + " " +
+           AdvertisementsServer.Global.DataAccess.GetPerson(item.PersonId).PersonLastname, "AuthorDetails", new { id = item.PersonId })
         </td>
         <td>
             @Html.ActionLink("Details", "Details", new { id=item.AdvertId })
