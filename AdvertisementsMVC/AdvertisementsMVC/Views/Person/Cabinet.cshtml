@@ -1,0 +1,60 @@
+﻿@model IEnumerable<AdvertisementsMVC.Advertisement>
+
+@{
+    ViewBag.Title = "Cabinet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{ 
+    string Name = AdvertisementsServer.Global.DataAccess.GetPerson(int.Parse((Session["PersonId"].ToString()))).PersonFirstname +
+        " " + AdvertisementsServer.Global.DataAccess.GetPerson(int.Parse((Session["PersonId"].ToString()))).PersonLastname;
+    int Id = int.Parse(Session["PersonId"].ToString());
+}
+
+<h2>You are logged in as @Name</h2>
+<td>
+    <button type="button" class="btn btn-secondary btn-lg">@Html.ActionLink("Edit Profile", "Edit", new { id = Id})</button>
+</td>
+
+<h3>Your posts</h3>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "AdvertDetails", new { id = item.AdvertId }) 
+                @Html.ActionLink("Remove", "RemoveAdvertisement", new { id = item.AdvertId })
+            </td>
+        </tr>
+    }
+
+</table>
